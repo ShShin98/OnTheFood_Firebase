@@ -37,13 +37,7 @@
   <div>
     <div id="map" style="width:100%;height:500px;"></div>
   </div>
-  <div>
-    <input class="form-control me-2" type="text" placeholder="식당 주소" id="addressIn" name="addressIn" size="20"
-      style="width: 300px;">
-    <input class="form-control me-2" type="text" placeholder="식당 이름" id="resNameIn" name="resNameIn" size="20"
-      style="width: 300px;">
-    <button class="btn btn-outline-success" type="submit" style="width: 100px;" onclick="AddMarker()">식당 추가</button>
-  </div>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous" ;>
@@ -52,7 +46,7 @@
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script type="text/javascript"
     src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ba661691f76964ef92150a4adc16d7eb&libraries=services"></script>
-    
+
   <script src="map.js"></script>
 
   <script src="/__/firebase/8.6.5/firebase-app.js"></script>
@@ -99,17 +93,17 @@
 
             var iwContent = `<div style="padding:5px;">상호명 : ${rName}<br>
               주소 : ${rAddress}
-              </div>`, 
-            iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+              </div>`,
+              iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
             // 인포윈도우로 장소에 대한 설명을 표시합니다
             var infowindow = new kakao.maps.InfoWindow({
               content: iwContent,
               removable: iwRemoveable
             });
-            kakao.maps.event.addListener(marker, 'click', function() {
+            kakao.maps.event.addListener(marker, 'click', function () {
               // 마커 위에 인포윈도우를 표시합니다
-              infowindow.open(map, marker);  
+              infowindow.open(map, marker);
             });
           }
         });
