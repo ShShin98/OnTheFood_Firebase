@@ -9,7 +9,12 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "rewrites": [{
+      "source": "**",
+      "destination": "/Login.html"
+    }]
+
   },
   "storage": {
     "rules": "storage.rules"
