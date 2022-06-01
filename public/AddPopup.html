@@ -60,7 +60,8 @@
             var data = {
                 상호명: $('#name').val(),
                 종류: $('#kinds').val(),
-                주소: $('#address').val()
+                주소: $('#address').val(),
+                아이디: firebase.auth().currentUser.email
             }
             db.collection('Restaurant').add(data);
 
