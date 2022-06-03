@@ -79,7 +79,7 @@
 			firebase.auth().signInWithEmailAndPassword(email, pw).then((result) => {
 				console.log(result);
 				console.log(result.user)
-                // window.location.href = 'Main.html';
+                window.location.href = 'Main.html';
 			});
             var user = firebase.auth().currentUser;
             console.log(user);
