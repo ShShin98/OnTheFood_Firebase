@@ -39,6 +39,9 @@
   </div>
   <div>
     <button class="btn btn-outline-success" id="koreanBtn" style="width: 100px;">한식</button>
+    <button class="btn btn-outline-success" id="chineseBtn" style="width: 100px;">중식</button>
+    <button class="btn btn-outline-success" id="japaneseBtn" style="width: 100px;">일식</button>
+    <button class="btn btn-outline-success" id="westernBtn" style="width: 100px;">양식</button>
   </div>
 
 
@@ -73,14 +76,15 @@
   </script>
 
   <script>
+    var markers = [];
     const db = firebase.firestore();
     db.collection('Restaurant').get().then((snapshot) => {
       snapshot.forEach((doc) => {
         console.log(doc.data());
         var rAddress = doc.data().주소;
         var rName = doc.data().상호명;
-        console.log(rAddress);
-        console.log(rName);
+        // console.log(rAddress);
+        // console.log(rName);
         geocoder.addressSearch(rAddress, function (result, status) {
 
           // 정상적으로 검색이 완료됐으면 
@@ -93,6 +97,9 @@
               position: coords,
               clickable: true
             });
+
+            marker.setMap(map);
+            markers.push(marker);
 
             var iwContent = `<div style="padding:5px;">상호명 : ${rName}<br>
               주소 : ${rAddress}
@@ -114,18 +121,25 @@
     });
   </script>
   <script>
-    $('#koreanBtn').click(function () {
+    var kindsTextKor = '한식';
+    var kindsTextChi = '중식';
+    var kindsTextJpn = '일식';
+    var kindsTextWes = '양식';
+
+    function btnClick(kt) {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+        console.log("markerHide");
+      }
+      markers = [];
       const db = firebase.firestore();
       db.collection('Restaurant').get().then((snapshot) => {
         snapshot.forEach((doc) => {
-          console.log(doc.data());
           var rAddress = doc.data().주소;
           var rName = doc.data().상호명;
           var rKinds = doc.data().종류;
-          console.log(rAddress);
-          console.log(rName);
-          console.log(rKinds);
-          if (rKinds === '한식') {
+          if (rKinds === kt) {
+            console.log(rKinds);
             geocoder.addressSearch(rAddress, function (result, status) {
 
               // 정상적으로 검색이 완료됐으면
@@ -138,8 +152,12 @@
                   position: coords,
                   clickable: true
                 });
+                
+                marker.setMap(map);
+                markers.push(marker);
 
-                var iwContent = `<div style="padding:5px;">상호명 : ${rName}<br>주소 : ${rAddress}</div>`,iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+                var iwContent = `<div style="padding:5px;">상호명 : ${rName}<br>주소 : ${rAddress}</div>`,
+                  iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
                 // 인포윈도우로 장소에 대한 설명을 표시합니다
                 var infowindow = new kakao.maps.InfoWindow({
@@ -153,9 +171,20 @@
               }
             });
           }
-
         });
       });
+    }
+    $('#koreanBtn').click(function(){
+      btnClick(kindsTextKor);
+    })
+    $('#chineseBtn').click(function(){
+      btnClick(kindsTextChi);
+    })
+    $('#japaneseBtn').click(function(){
+      btnClick(kindsTextJpn);
+    })
+    $('#westernBtn').click(function(){
+      btnClick(kindsTextWes);
     })
   </script>
 </body>
