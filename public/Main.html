@@ -35,7 +35,10 @@
     </div>
   </nav>
   <div>
-    <div id="map" style="width:100%;height:500px;"></div>
+    <div id="map" style="width:100%;height:700px;"></div>
+  </div>
+  <div>
+    <button class="btn btn-outline-success" id="koreanBtn" style="width: 100px;">한식</button>
   </div>
 
 
@@ -109,6 +112,51 @@
         });
       });
     });
+  </script>
+  <script>
+    $('#koreanBtn').click(function () {
+      const db = firebase.firestore();
+      db.collection('Restaurant').get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+          console.log(doc.data());
+          var rAddress = doc.data().주소;
+          var rName = doc.data().상호명;
+          var rKinds = doc.data().종류;
+          console.log(rAddress);
+          console.log(rName);
+          console.log(rKinds);
+          if (rKinds === '한식') {
+            geocoder.addressSearch(rAddress, function (result, status) {
+
+              // 정상적으로 검색이 완료됐으면
+              if (status === kakao.maps.services.Status.OK) {
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                // 결과값으로 받은 위치를 마커로 표시합니다
+                var marker = new kakao.maps.Marker({
+                  map: map,
+                  position: coords,
+                  clickable: true
+                });
+
+                var iwContent = `<div style="padding:5px;">상호명 : ${rName}<br>주소 : ${rAddress}</div>`,iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+                // 인포윈도우로 장소에 대한 설명을 표시합니다
+                var infowindow = new kakao.maps.InfoWindow({
+                  content: iwContent,
+                  removable: iwRemoveable
+                });
+                kakao.maps.event.addListener(marker, 'click', function () {
+                  // 마커 위에 인포윈도우를 표시합니다
+                  infowindow.open(map, marker);
+                });
+              }
+            });
+          }
+
+        });
+      });
+    })
   </script>
 </body>
 
