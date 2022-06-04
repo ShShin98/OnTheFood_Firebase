@@ -34,10 +34,6 @@
       </div>
     </div>
   </nav>
-  <div id="map" style="float:left; width:70%; height:700px;"></div>
-  <div class="container" style="float:left; width:30%; height:700px; background-color: lightgray;">
-    
-  </div>
   <div style="float:left; width:70%; text-align:center; background-color: antiquewhite; ">
     <button class="btn btn-outline-success" id="allResBtn" style="width: 70px;">전체</button>
     <button class="btn btn-outline-success" id="koreanBtn" style="width: 70px;">한식</button>
@@ -45,6 +41,8 @@
     <button class="btn btn-outline-success" id="japaneseBtn" style="width: 70px;">일식</button>
     <button class="btn btn-outline-success" id="westernBtn" style="width: 70px;">양식</button>
   </div>
+  <div id="map" style="float:left; width:70%; height:700px;"></div>
+  <div class="container" style="float:left; width:30%; height:700px; background-color: lightgray;"></div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -78,7 +76,7 @@
   </script>
 
   <script>
-    var markers =[];
+    var markers = [];
 
     function drawAllMarker() {
       for (var i = 0; i < markers.length; i++) {
@@ -93,6 +91,7 @@
           var rAddress = doc.data().주소;
           var rName = doc.data().상호명;
           var rKinds = doc.data().종류;
+          var rImage = doc.data().이미지;
           // console.log(rAddress);
           // console.log(rName);
           geocoder.addressSearch(rAddress, function (result, status) {
@@ -111,23 +110,34 @@
               marker.setMap(map);
               markers.push(marker);
 
-              var iwContent = `<div style="padding:10px;">${rName}</div>`,
-                iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+              var iwContent = `<div style="padding:10px; width:200px; text-align:center;">${rName}</div>`
+              //iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
               // 인포윈도우로 장소에 대한 설명을 표시합니다
               var infowindow = new kakao.maps.InfoWindow({
                 content: iwContent,
-                removable: iwRemoveable
+                // removable: iwRemoveable
+              });
+              // 마커에 마우스오버 이벤트를 등록합니다
+              kakao.maps.event.addListener(marker, 'mouseover', function () {
+                // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+                infowindow.open(map, marker);
+              });
+              // 마커에 마우스아웃 이벤트를 등록합니다
+              kakao.maps.event.addListener(marker, 'mouseout', function () {
+                // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+                infowindow.close();
               });
               kakao.maps.event.addListener(marker, 'click', function () {
-              // 마커 위에 인포윈도우를 표시합니다
-              infowindow.open(map, marker);
-              var template = `<div>
+                // 마커 위에 인포윈도우를 표시합니다
+                //infowindow.open(map, marker);
+                var template = `<div>
                 <h4>상호명 : ${rName}</h4>
                 <p>종류 : ${rKinds}</p>
                 <p>주소 : ${rAddress}</p>
+                <p>사진 : ${rImage}</p>
               </div>`;
-              $('.container').html(template);
+                $('.container').html(template);
               });
             }
           });
@@ -175,20 +185,32 @@
                 marker.setMap(map);
                 markers.push(marker);
 
-                var iwContent = `<div style="padding:10px;">상호명 : ${rName}<br>
-              주소 : ${rAddress}<br>
-              종류 : ${rKinds}
-              </div>`,
-                  iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+                var iwContent = `<div style="padding:10px; width:200px; text-align:center;">${rName}</div>`
+                //iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
                 // 인포윈도우로 장소에 대한 설명을 표시합니다
                 var infowindow = new kakao.maps.InfoWindow({
                   content: iwContent,
-                  removable: iwRemoveable
+                  //removable: iwRemoveable
+                });
+                // 마커에 마우스오버 이벤트를 등록합니다
+                kakao.maps.event.addListener(marker, 'mouseover', function () {
+                  // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+                  infowindow.open(map, marker);
+                });
+                // 마커에 마우스아웃 이벤트를 등록합니다
+                kakao.maps.event.addListener(marker, 'mouseout', function () {
+                  // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+                  infowindow.close();
                 });
                 kakao.maps.event.addListener(marker, 'click', function () {
                   // 마커 위에 인포윈도우를 표시합니다
-                  infowindow.open(map, marker);
+                  var template = `<div>
+                  <h4>상호명 : ${rName}</h4>
+                  <p>종류 : ${rKinds}</p>
+                  <p>주소 : ${rAddress}</p>
+                </div>`;
+                  $('.container').html(template);
                 });
               }
             });
