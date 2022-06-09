@@ -28,8 +28,8 @@
           </li>
         </ul>
         <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="맛집 찾기" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit" style="width: 100px;">검색</button>
+          <input class="form-control me-2" id="searchTb" type="search" placeholder="맛집 찾기" aria-label="Search">
+          <button class="btn btn-outline-success" id="searchBtn" type="button" style="width: 100px;">검색</button>
         </form>
       </div>
     </div>
@@ -168,7 +168,7 @@
     var kindsTextJpn = '일식';
     var kindsTextWes = '양식';
 
-    function btnClick(kt) {
+    function drawMarker(kt) {
       for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
         console.log("markerHide");
@@ -180,6 +180,7 @@
           var rAddress = doc.data().주소;
           var rName = doc.data().상호명;
           var rKinds = doc.data().종류;
+          var rImage = doc.data().이미지;
           if (rKinds === kt) {
             console.log(rKinds);
             geocoder.addressSearch(rAddress, function (result, status) {
@@ -234,16 +235,87 @@
       });
     }
     $('#koreanBtn').click(function () {
-      btnClick(kindsTextKor);
+      drawMarker(kindsTextKor);
     })
     $('#chineseBtn').click(function () {
-      btnClick(kindsTextChi);
+      drawMarker(kindsTextChi);
     })
     $('#japaneseBtn').click(function () {
-      btnClick(kindsTextJpn);
+      drawMarker(kindsTextJpn);
     })
     $('#westernBtn').click(function () {
-      btnClick(kindsTextWes);
+      drawMarker(kindsTextWes);
+    })
+  </script>
+  <script>
+    $('#searchBtn').click(function () {
+      var resT = $('#searchTb').val();
+      console.log(resT);
+
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+        console.log("markerHide");
+      }
+      markers = [];
+      const db = firebase.firestore();
+      db.collection('Restaurant').get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+          var rAddress = doc.data().주소;
+          var rName = doc.data().상호명;
+          var rKinds = doc.data().종류;
+          var rImage = doc.data().이미지;
+          if (rName === resT) {
+            console.log(rKinds);
+            geocoder.addressSearch(rAddress, function (result, status) {
+
+              // 정상적으로 검색이 완료됐으면
+              if (status === kakao.maps.services.Status.OK) {
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                // 결과값으로 받은 위치를 마커로 표시합니다
+                var marker = new kakao.maps.Marker({
+                  map: map,
+                  position: coords,
+                  clickable: true
+                });
+
+                marker.setMap(map);
+                markers.push(marker);
+
+                var iwContent = `<div style="padding:10px; width:200px; text-align:center;">${rName}</div>`
+                //iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+                // 인포윈도우로 장소에 대한 설명을 표시합니다
+                var infowindow = new kakao.maps.InfoWindow({
+                  content: iwContent,
+                  //removable: iwRemoveable
+                });
+                // 마커에 마우스오버 이벤트를 등록합니다
+                kakao.maps.event.addListener(marker, 'mouseover', function () {
+                  // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+                  infowindow.open(map, marker);
+                });
+                // 마커에 마우스아웃 이벤트를 등록합니다
+                kakao.maps.event.addListener(marker, 'mouseout', function () {
+                  // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+                  infowindow.close();
+                });
+                kakao.maps.event.addListener(marker, 'click', function () {
+                  // 마커 위에 인포윈도우를 표시합니다
+                  var template = `<div>
+                  <h4>상호명 : ${rName}</h4>
+                  <p>종류 : ${rKinds}</p>
+                  <p>주소 : ${rAddress}</p>
+                  <p>사진</p>
+                  <img src=${rImage}>
+                </div>`;
+                  $('.container').html(template);
+                });
+              }
+            });
+          }
+        });
+      });
     })
   </script>
 </body>
