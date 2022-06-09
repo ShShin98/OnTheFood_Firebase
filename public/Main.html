@@ -24,7 +24,10 @@
             <a class="nav-link active" href="#" onclick="Logout()">로그아웃</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#" onclick="AddResBtn()">맛집추가</a>
+            <a class="nav-link active" aria-current="page" href="#" onclick="AddResBtn()">맛집추가</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#" onclick="AddResBtn()">나의맛집</a>
           </li>
         </ul>
         <form class="d-flex">
@@ -250,8 +253,14 @@
   <script>
     $('#searchBtn').click(function () {
       var resT = $('#searchTb').val();
+      var input = document.getElementById('searchTb');
+      input.value = null;
+      var temp = 0;
       console.log(resT);
-
+      if(resT === '') {
+        window.alert('검색어를 입력해주세요');
+        return 0;
+      }
       for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
         console.log("markerHide");
@@ -264,7 +273,8 @@
           var rName = doc.data().상호명;
           var rKinds = doc.data().종류;
           var rImage = doc.data().이미지;
-          if (rName === resT) {
+          if (rName.includes(resT)) {
+            temp = 1;
             console.log(rKinds);
             geocoder.addressSearch(rAddress, function (result, status) {
 
@@ -315,9 +325,13 @@
             });
           }
         });
+        if (temp === 0) {
+          window.alert('검색 결과가 없습니다.');
+          drawAllMarker();
+        }
+        console.log(temp);
       });
     })
   </script>
 </body>
-
 </html>
