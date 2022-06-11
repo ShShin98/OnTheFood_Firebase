@@ -32,11 +32,4 @@ function panTo() {
     map.panTo(moveLatLon);
 }
 
-var openWin;
-
-function AddResBtn() {
-    window.name = "parentForm";
-    openWin = window.open("AddPopup.html","childForm","width=500px, height=400px");
-}
-
 var geocoder = new kakao.maps.services.Geocoder();
