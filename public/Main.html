@@ -51,7 +51,7 @@
         <div id="map" style="height:700px;"></div>
       </div>
       <div class="col-lg-3">
-        <div id="resInfoDiv" style="height:700px; background-color: lightgray;"></div>
+        <div id="resInfoDiv" style="height:700px; background-color: white;"></div>
       </div>
     </div>
   </div>
@@ -263,18 +263,18 @@
     })
   </script>
 
-<script>
-   function IDcheck(){
-    firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      var uid = user.uid;
+  <script>
+    function IDcheck(){
+      firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        var uid = user.uid;
+        console.log(uid);
+    } else {
+      alert("로그인 후 이용하세요");
       console.log(uid);
-  } else {
-    alert("로그인 후 이용하세요");
-    console.log(uid);
-    location.href = "Login.html";
-  }
-});
+      location.href = "Login.html";
+    }
+  });
 
 
   //   var userInfo = firebase.auth().currentUser;
@@ -384,6 +384,8 @@
           var rKinds = doc.data().종류;
           var rImage = doc.data().이미지;
           var userId = doc.data().아이디;
+          var docId = doc.data().식당ID;
+          
           if (userId === firebase.auth().currentUser.email) {
             console.log(userId);
             geocoder.addressSearch(rAddress, function (result, status) {
@@ -421,6 +423,7 @@
                   infowindow.close();
                 });
                 kakao.maps.event.addListener(marker, 'click', function () {
+                  console.log(docId);
                   // 마커 위에 인포윈도우를 표시합니다
                   var template = `<div>
                   <h4>상호명 : ${rName}</h4>
@@ -428,8 +431,16 @@
                   <p>주소 : ${rAddress}</p>
                   <p>사진</p>
                   <img src=${rImage}>
+                  <button class="btn btn-secondary" id="delResBtn" type="button" style="width: 100px;">삭제</button>
                 </div>`;
                   $('#resInfoDiv').html(template);
+                  $('#delResBtn').click(function() {
+                    db.collection('Restaurant').doc(docId).delete().then(() => {
+                      console.log('삭제완료');
+                    }).catch((err) => {
+                      console.log(err);
+                    }) 
+                  })
                 });
               }
             });

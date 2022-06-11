@@ -32,4 +32,5 @@ function panTo() {
     map.panTo(moveLatLon);
 }
 
+
 var geocoder = new kakao.maps.services.Geocoder();
