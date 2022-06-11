@@ -72,7 +72,7 @@
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        $('#loginBtn').click(function () {
+        $('#loginBtn').click(function (){
 			var email = $('#emailInput').val();
 			var pw = $('#pwInput').val();
 
@@ -83,7 +83,21 @@
 			});
             var user = firebase.auth().currentUser;
             console.log(user);
-		});  
+		});
+        $("#pwInput").keypress(function (e){
+            if(e.keyCode === 13){
+            var email = $('#emailInput').val();
+			var pw = $('#pwInput').val();
+
+			firebase.auth().signInWithEmailAndPassword(email, pw).then((result) => {
+				console.log(result);
+				console.log(result.user)
+                window.location.href = 'Main.html';
+			});
+            var user = firebase.auth().currentUser;
+            console.log(user);
+            }
+        })
     </script>
 </body>
 

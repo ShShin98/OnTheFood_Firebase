@@ -33,11 +33,4 @@ function panTo() {
 }
 
 
-
-
-// function AddResBtn() {
-//     window.name = "parentForm";
-//     openWin = window.open("AddPopup2.html","childForm","width=500px, height=400px");
-// }
-
 var geocoder = new kakao.maps.services.Geocoder();
