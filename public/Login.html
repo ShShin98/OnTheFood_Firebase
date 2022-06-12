@@ -19,7 +19,7 @@
     <link href="signin.css" rel="stylesheet">
 </head>
 
-<body class="text-center">
+<body onload="UserCheck()" class="text-center">
     <main class="form-signin">
         <form>
             <h1 class="h3 mb-3 fw-normal">OntheFood</h1>
@@ -71,7 +71,7 @@
     <script>
         const db = firebase.firestore();
         const storage = firebase.storage();
-
+        
         $('#loginBtn').click(function (){
 			var email = $('#emailInput').val();
 			var pw = $('#pwInput').val();
@@ -80,7 +80,10 @@
 				console.log(result);
 				console.log(result.user)
                 window.location.href = 'Main.html';
-			});
+			}).catch((error) => {
+                alert("로그인 오류입니다. 아이디와 비밀번호를 확인하세요.");
+            });
+          
             var user = firebase.auth().currentUser;
             console.log(user);
 		});
@@ -93,11 +96,24 @@
 				console.log(result);
 				console.log(result.user)
                 window.location.href = 'Main.html';
-			});
-            var user = firebase.auth().currentUser;
-            console.log(user);
+			}).catch((error) => {
+                alert("로그인 오류입니다. 아이디와 비밀번호를 확인하세요.");
+            });
             }
         })
+        function UserCheck() {
+      firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        var uid = user.uid;
+        console.log(uid);
+        if(uid != "")
+            {
+                window.location.href = "Main.html";
+            }
+    } 
+  });
+}
+        
     </script>
 </body>
 

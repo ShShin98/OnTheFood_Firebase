@@ -80,10 +80,13 @@
 
   location.href="Login.html"
   console.log("Logout success")
+  console.log(firebase.auth().currentUser);
 }).catch((error) => {
   // An error happened.
 });
     }
+
+	
   </script>
 
   <script>
@@ -103,6 +106,8 @@
 
 
   <script>
+
+    console.log(firebase.auth().currentUser);
     var markers = [];
 
     function drawAllMarker() {
@@ -279,14 +284,6 @@
       location.href = "Login.html";
     }
   });
-
-
-  //   var userInfo = firebase.auth().currentUser;
-  //   console.log(userInfo);
-  //   //console.log(firebase.auth().currentUser.email)
-  //   if(firebase.auth().currentUser.email == ""){
-      
-  //   }
 }
 </script>
 
