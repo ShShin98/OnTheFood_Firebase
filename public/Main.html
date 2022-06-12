@@ -30,7 +30,7 @@
             <a class="nav-link active" id="myResBtn" aria-current="page" href="#" >나의맛집</a>
           </li>
         </ul>
-        <form class="d-flex">
+        <form class="d-flex" name="searchForm">
           <input class="form-control me-2" id="searchTb" type="search" placeholder="맛집 찾기" aria-label="Search">
           <button class="btn btn-warning" id="searchBtn" type="button" style="width: 100px;">검색</button>
         </form>
@@ -80,10 +80,13 @@
 
   location.href="Login.html"
   console.log("Logout success")
+  console.log(firebase.auth().currentUser);
 }).catch((error) => {
   // An error happened.
 });
     }
+
+	
   </script>
 
   <script>
@@ -103,6 +106,8 @@
 
 
   <script>
+
+    console.log(firebase.auth().currentUser);
     var markers = [];
 
     function drawAllMarker() {
@@ -243,7 +248,7 @@
                   <p>종류 : ${rKinds}</p>
                   <p>주소 : ${rAddress}</p>
                   <p>사진</p>
-                  <img src=${rImage}>
+                  <img src=${rImage} class="img-fluid">
                   <p>후기 : ${rReview}</p>
                 </div>`;
                   $('#resInfoDiv').html(template);
@@ -277,29 +282,21 @@
       if (user) {
         var uid = user.uid;
         console.log(uid);
-    } else {
-      alert("로그인 후 이용하세요");
-      console.log(uid);
-      location.href = "Login.html";
-    }
-  });
-
-
-  //   var userInfo = firebase.auth().currentUser;
-  //   console.log(userInfo);
-  //   //console.log(firebase.auth().currentUser.email)
-  //   if(firebase.auth().currentUser.email == ""){
-      
-  //   }
-}
-</script>
+      } else {
+        alert("로그인 후 이용하세요");
+        console.log(uid);
+        location.href = "Login.html";
+      }
+    });
+  }
+  </script>
 
   <script>
     $('#searchBtn').click(function () {
       var resT = $('#searchTb').val();
       var input = document.getElementById('searchTb');
-      input.value = null;
       var temp = 0;
+      input.value = null;
       console.log(resT);
       if(resT === '') {
         window.alert('검색어를 입력해주세요');
@@ -362,7 +359,7 @@
                   <p>종류 : ${rKinds}</p>
                   <p>주소 : ${rAddress}</p>
                   <p>사진</p>
-                  <img src=${rImage}>
+                  <img src=${rImage} class="img-fluid">
                   <p>후기 : ${rReview}</p>
                 </div>`;
                   $('#resInfoDiv').html(template);
@@ -377,6 +374,7 @@
         }
         console.log(temp);
       });
+      
     })
   </script>
   <script>
@@ -441,7 +439,7 @@
                   <p>종류 : ${rKinds}</p>
                   <p>주소 : ${rAddress}</p>
                   <p>사진</p>
-                  <img src=${rImage}>
+                  <img src=${rImage} class="img-fluid">
                   <p>후기 : ${rReview}</p>
                   <button class="btn btn-secondary" id="delResBtn" type="button" style="width: 100px; margin: 10px 0; float:right;">삭제</button>
                 </div>`;
@@ -450,11 +448,11 @@
                     if(window.confirm('식당을 삭제하시겠습니까?')) {
                       db.collection('Restaurant').doc(docId).delete().then(() => {
                         console.log('삭제완료');
+                        window.location.reload();
                       }).catch((err) => {
                         console.log(err);
                       }) 
                     } 
-                    
                   })
                 });
               }
