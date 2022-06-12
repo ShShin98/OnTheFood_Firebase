@@ -32,18 +32,18 @@
         </ul>
         <form class="d-flex">
           <input class="form-control me-2" id="searchTb" type="search" placeholder="맛집 찾기" aria-label="Search">
-          <button class="btn btn-outline-secondary" id="searchBtn" type="button" style="width: 100px;">검색</button>
+          <button class="btn btn-warning" id="searchBtn" type="button" style="width: 100px;">검색</button>
         </form>
       </div>
     </div>
   </nav>
-  <div style="text-align:center; background-color: antiquewhite; ">
-  <!-- <div style="float:left; width:70%; text-align:center; background-color: antiquewhite; "> -->
-    <button class="btn btn-outline-secondary" id="allResBtn" style="width: 70px;">전체</button>
-    <button class="btn btn-outline-secondary" id="koreanBtn" style="width: 70px;">한식</button>
-    <button class="btn btn-outline-secondary" id="chineseBtn" style="width: 70px;">중식</button>
-    <button class="btn btn-outline-secondary" id="japaneseBtn" style="width: 70px;">일식</button>
-    <button class="btn btn-outline-secondary" id="westernBtn" style="width: 70px;">양식</button>
+  <div style="text-align:center; margin:10px 0;">
+    <button class="btn btn-secondary" id="allResBtn" style="width: 70px;">전체</button>
+    <button class="btn btn-warning" id="koreanBtn" style="width: 70px;">한식</button>
+    <button class="btn btn-warning" id="chineseBtn" style="width: 70px;">중식</button>
+    <button class="btn btn-warning" id="japaneseBtn" style="width: 70px;">일식</button>
+    <button class="btn btn-warning" id="westernBtn" style="width: 70px;">양식</button>
+    <button class="btn btn-warning" id="etcBtn" style="width: 70px;">기타</button>
   </div>
   <div class="container-fluid">
     <div class="row">
@@ -182,6 +182,7 @@
     var kindsTextChi = '중식';
     var kindsTextJpn = '일식';
     var kindsTextWes = '양식';
+    var kindsTextEtc = '기타';
 
     function drawMarker(kt) {
       for (var i = 0; i < markers.length; i++) {
@@ -260,6 +261,9 @@
     })
     $('#westernBtn').click(function () {
       drawMarker(kindsTextWes);
+    })
+    $('#etcBtn').click(function () {
+      drawMarker(kindsTextEtc);
     })
   </script>
 
@@ -431,15 +435,18 @@
                   <p>주소 : ${rAddress}</p>
                   <p>사진</p>
                   <img src=${rImage}>
-                  <button class="btn btn-secondary" id="delResBtn" type="button" style="width: 100px;">삭제</button>
+                  <button class="btn btn-secondary" id="delResBtn" type="button" style="width: 100px; margin: 10px 0; float:right;">삭제</button>
                 </div>`;
                   $('#resInfoDiv').html(template);
                   $('#delResBtn').click(function() {
-                    db.collection('Restaurant').doc(docId).delete().then(() => {
-                      console.log('삭제완료');
-                    }).catch((err) => {
-                      console.log(err);
-                    }) 
+                    if(window.confirm('식당을 삭제하시겠습니까?')) {
+                      db.collection('Restaurant').doc(docId).delete().then(() => {
+                        console.log('삭제완료');
+                      }).catch((err) => {
+                        console.log(err);
+                      }) 
+                    } 
+                    
                   })
                 });
               }
@@ -452,7 +459,7 @@
   <script>
     $('#addResBtn').click(function () {
     window.name = "parentForm";
-    openWin = window.open("AddPopup2.html","childForm","width=500px, height=400px");
+    openWin = window.open("AddPopup2.html","childForm","width=1000px, height=730px");
     })
   </script>
 </body>
