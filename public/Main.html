@@ -119,6 +119,7 @@
           var rName = doc.data().상호명;
           var rKinds = doc.data().종류;
           var rImage = doc.data().이미지;
+          var rReview = doc.data().후기;
           // console.log(rAddress);
           // console.log(rName);
           geocoder.addressSearch(rAddress, function (result, status) {
@@ -164,6 +165,7 @@
                 <p>주소 : ${rAddress}</p>
                 <p>사진</p>
                 <img src=${rImage}>
+                <p>후기 : ${rReview}</p>
               </div>`;
                 $('#resInfoDiv').html(template);
               });
@@ -197,6 +199,7 @@
           var rName = doc.data().상호명;
           var rKinds = doc.data().종류;
           var rImage = doc.data().이미지;
+          var rReview = doc.data().후기;
           if (rKinds === kt) {
             console.log(rKinds);
             geocoder.addressSearch(rAddress, function (result, status) {
@@ -241,6 +244,7 @@
                   <p>주소 : ${rAddress}</p>
                   <p>사진</p>
                   <img src=${rImage}>
+                  <p>후기 : ${rReview}</p>
                 </div>`;
                   $('#resInfoDiv').html(template);
                 });
@@ -313,6 +317,7 @@
           var rName = doc.data().상호명;
           var rKinds = doc.data().종류;
           var rImage = doc.data().이미지;
+          var rReview = doc.data().후기;
           if (rName.includes(resT)) {
             temp = 1;
             console.log(rKinds);
@@ -358,6 +363,7 @@
                   <p>주소 : ${rAddress}</p>
                   <p>사진</p>
                   <img src=${rImage}>
+                  <p>후기 : ${rReview}</p>
                 </div>`;
                   $('#resInfoDiv').html(template);
                 });
@@ -389,6 +395,7 @@
           var rImage = doc.data().이미지;
           var userId = doc.data().아이디;
           var docId = doc.data().식당ID;
+          var rReview = doc.data().후기;
           
           if (userId === firebase.auth().currentUser.email) {
             console.log(userId);
@@ -435,6 +442,7 @@
                   <p>주소 : ${rAddress}</p>
                   <p>사진</p>
                   <img src=${rImage}>
+                  <p>후기 : ${rReview}</p>
                   <button class="btn btn-secondary" id="delResBtn" type="button" style="width: 100px; margin: 10px 0; float:right;">삭제</button>
                 </div>`;
                   $('#resInfoDiv').html(template);
