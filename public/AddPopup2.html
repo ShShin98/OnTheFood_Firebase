@@ -11,7 +11,7 @@
 <div id="map" style="width:100%;height:350px;"></div>
 <input id="searchTb" type="search" placeholder="맛집 찾기" aria-label="Search">
 <button class="btn btn-outline-secondary" id="searchBtn_add" type="button" style="width: 100px;">검색</button>
-<form name="addForm">
+<form name="addForm" style="width: 500px; margin: 0 auto;">
     <label for="name">상호명</label>
     <label class="form-control me-2" type="text" id="name" name="name" size="20">지도에서 맛집을 선택하면 이름이 입력됩니다</label>
     <label for="address">주소</label>
@@ -27,7 +27,7 @@
     <!-- <label for="menuInfo">메뉴 정보</label><br>
     <textarea class="form-control me-2" id="menuInfo" name="menuInfo" cols="33" rows="5"></textarea><br> -->
     <input class="form-control mt-2" type="file" id="image">
-    <button class="btn btn-danger mt-3" type="button" id="inputRes">추가</button>
+    <button class="btn btn-success mt-3" type="button" id="inputRes" style="width: 500px;">추가</button>
     <!-- <button class="btn btn-outline-success" type="button" id="inputRes">입력</button> -->
 </form>
 
@@ -155,49 +155,68 @@ function displayMarker(place) {
         console.log(place_id);
         
     });
+}
+$('#inputRes').click(function () {
     const db = firebase.firestore();
     const storage = firebase.storage();
+    var temp = 0;
 
-    $('#inputRes').click(function () {
-        var file = document.querySelector('#image').files[0];
-        var storageRef = storage.ref();
-        var saveRoute = storageRef.child('image/' + file.name);
-        var upload = saveRoute.put(file);
-        
-        upload.on( 'state_changed',
-        // 변화시 동작하는 함수
-            null,
-            //에러시 동작하는 함수
-            (error) => {
-                console.error('실패사유는', error);
-            },
-            // 성공시 동작하는 함수
-            () => {
-                upload.snapshot.ref.getDownloadURL().then((url) => {
-                    console.log('업로드된 경로는', url);
-                    var data = {
-                        식당ID: place_id,
-                        상호명: place_name,
-                        주소: place_address,
-                        종류: $('#kinds').val(),
-                        아이디: firebase.auth().currentUser.email,
-                        이미지: url,
-                    }
-                    //if(place.)
-                    console.log(place_id);
-                    db.collection('Restaurant').doc(place_id).set(data);
+    if(document.querySelector('#image').files[0] == null) {
+        window.alert('식당과 관련된 사진을 추가해주세요.');
+    }
 
-                    opener.location.reload();
-                    // 창이 너무 빨리 닫혀서 데이터 저장 안되는 문제때문에 지연시간 설정
-                    setTimeout(() => {
-                        window.close();
-                    }, 700);
-                });
+
+    db.collection('Restaurant').get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+            var rId = doc.data().식당ID;
+            if(rId === place_id) {
+                temp = 1;
+                console.log('등록된 식당');
+                console.log(temp);
             }
-        );
-    });
-}
-   
+        });
+        if(temp === 0) {
+            var file = document.querySelector('#image').files[0];
+            var storageRef = storage.ref();
+            var saveRoute = storageRef.child('image/' + file.name);
+            var upload = saveRoute.put(file);
+            
+            upload.on( 'state_changed',
+            // 변화시 동작하는 함수
+                null,
+                //에러시 동작하는 함수
+                (error) => {
+                    console.error('실패사유는', error);
+                },
+                // 성공시 동작하는 함수
+                () => {
+                    upload.snapshot.ref.getDownloadURL().then((url) => {
+                        console.log('업로드된 경로는', url);
+                        var data = {
+                            식당ID: place_id,
+                            상호명: place_name,
+                            주소: place_address,
+                            종류: $('#kinds').val(),
+                            아이디: firebase.auth().currentUser.email,
+                            이미지: url,
+                        }
+                        //if(place.)
+                        console.log(place_id);
+                        db.collection('Restaurant').doc(place_id).set(data);
+
+                        opener.location.reload();
+                        // 창이 너무 빨리 닫혀서 데이터 저장 안되는 문제때문에 지연시간 설정
+                        setTimeout(() => {
+                            window.close();
+                        }, 1000);
+                    });
+                }
+            );
+        } else {
+            window.alert("이미 등록된 식당입니다.");
+        }         
+    })
+});   
 </script>
 </body>
 </html>
