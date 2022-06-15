@@ -144,26 +144,26 @@
 			console.log(password_confirm_2.value)
 
 			if(email_2.value == ""){
-				alert("이메일 주소를 입력하세요");
+				alert("이메일 주소를 입력하세요.");
 				emailInput.focus()
 				return false;
 			}
 			else{
 				if(!email_check(email_2.value)){
-					alert("이메일 형식이 맞지않습니다");
+					alert("이메일 형식이 맞지않습니다.");
 					return false;
 				}
 			}
 
 			//if(password.value != )
 			if(password_2.value == ""){
-				alert("비밀번호를 입력하세요");
+				alert("비밀번호를 입력하세요.");
 				pwInput1.focus()
 				return false;
 			}
 
 			if(password_2.value != password_confirm_2.value){
-				alert("비밀번호가 같지 않습니다");
+				alert("비밀번호가 같지 않습니다.");
 				pwInput2.focus()
 				return false;
 			}
@@ -175,43 +175,12 @@
 				console.log(result);
 				console.log(result.user);
 				window.location.href = 'Login.html';
-			})
+			}).catch((result) => {
+				alert("이메일 중복입니다. 다른 이메일을 입력하세요.");
+			});
 			
 		}
 		})
-		
-		
-
-
-	// 	$('#register').click(function (){
-	// 	var email = $('#emailInput').val();
-	// 	var password = $('#pwInput1').val();
-	// 	auth.createUserWithEmailAndPassword(email, password)
-	// 	.then(userCredential => {
-
-	// 		const currentUser = {
-	// 			id: userCredential.user.uid,
-	// 			email: email,
-	// 			emailVerified: userCredential.user.emailVerified
-	// 		}
-	// 		fs.collection('users').doc(currentUser.id).set({
-	// 		email: currentUser.email,
-	// 	}).then(function () {
-	// 		console.log("성공");
-	// 	}).catch(() => {
-	// 		console.error("실패",error);
-	// 	})
-
-	// 	}).then(() => {
-	// 		let user = auth.currentUser;
-
-	// 		user.sendEmailVerification()
-	// 			.then(function () {
-	// 				console.log("이메일 전송")
-	// 			})
-	// 			.catch("email not sent");
-	// 	})
-	// })
 
 	</script>
 </body>
