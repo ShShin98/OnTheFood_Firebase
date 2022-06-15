@@ -77,15 +77,12 @@
 			var pw = $('#pwInput').val();
 
 			firebase.auth().signInWithEmailAndPassword(email, pw).then((result) => {
-				console.log(result);
-				console.log(result.user)
                 window.location.href = 'Main.html';
 			}).catch((error) => {
                 alert("로그인 오류입니다. 아이디와 비밀번호를 확인하세요.");
             });
           
             var user = firebase.auth().currentUser;
-            console.log(user);
 		});
         $("#pwInput").keypress(function (e){
             if(e.keyCode === 13){
@@ -93,8 +90,7 @@
 			var pw = $('#pwInput').val();
 
 			firebase.auth().signInWithEmailAndPassword(email, pw).then((result) => {
-				console.log(result);
-				console.log(result.user)
+
                 window.location.href = 'Main.html';
 			}).catch((error) => {
                 alert("로그인 오류입니다. 아이디와 비밀번호를 확인하세요.");
@@ -105,7 +101,7 @@
       firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         var uid = user.uid;
-        console.log(uid);
+
         if(uid != "")
             {
                 window.location.href = "Main.html";
