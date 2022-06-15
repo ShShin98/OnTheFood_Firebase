@@ -9,19 +9,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>OnTheFood 회원가입</title>
 
-	<!-- 부트스트랩 CDN 로드 : 항상 최신 버전 사용 : maxcdn -->
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"> -->
-	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/latest/js/bootstrap.min.js"></script>  -->
-	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/latest/js/bootstrap.bundle.min.js"></script>     -->
-
-
-	<!-- 부트스트랩 CDN 로드 : 항상 최신 버전 사용 : netdna -->
-	<!-- <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"> -->
-	<!-- <script src="https://netdna.bootstrapcdn.com/bootstrap/latest/js/bootstrap.min.js"></script> -->
-
-
-
-	<!-- 내부 CSS 스타일 지정 -->
 	<style>
 		/* [html, body 영역 스타일 지정] */
 		html,
@@ -46,26 +33,6 @@
 		}
 	</style>
 
-
-
-	<!-- 내부 JS 지정 -->
-	<!-- <script>
-		/* [html 최초 로드 및 이벤트 상시 대기 실시] */
-		window.onload = function () {
-			console.log("");
-			console.log("[window onload] : [start]");
-			console.log("");
-
-			// 이벤트 함수 호출
-			main();
-		};
-
-		function main() {
-			console.log("");
-			console.log("[main] : [start]");
-			console.log("");
-		};
-	</script> -->
 
 </head>
 
@@ -139,10 +106,6 @@
 			}		
 
 
-			console.log(email_2.value)
-			console.log(password_2.value)
-			console.log(password_confirm_2.value)
-
 			if(email_2.value == ""){
 				alert("이메일 주소를 입력하세요.");
 				emailInput.focus()
@@ -172,8 +135,6 @@
 
 			if (password_2.value == password_confirm_2.value && email_2.value != ""){
 			firebase.auth().createUserWithEmailAndPassword(email, password).then((result) => {
-				console.log(result);
-				console.log(result.user);
 				window.location.href = 'Login.html';
 			}).catch((result) => {
 				alert("이메일 중복입니다. 다른 이메일을 입력하세요.");

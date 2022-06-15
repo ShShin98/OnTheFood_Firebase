@@ -80,7 +80,6 @@
 
   location.href="Login.html"
   console.log("Logout success")
-  console.log(firebase.auth().currentUser);
 }).catch((error) => {
   // An error happened.
 });
@@ -107,26 +106,21 @@
 
   <script>
 
-    console.log(firebase.auth().currentUser);
     var markers = [];
 
     function drawAllMarker() {
       for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
-        console.log("markerHide");
       }
       markers = [];
       const db = firebase.firestore();
       db.collection('Restaurant').get().then((snapshot) => {
         snapshot.forEach((doc) => {
-          console.log(doc.data());
           var rAddress = doc.data().주소;
           var rName = doc.data().상호명;
           var rKinds = doc.data().종류;
           var rImage = doc.data().이미지;
           var rReview = doc.data().후기;
-          // console.log(rAddress);
-          // console.log(rName);
           geocoder.addressSearch(rAddress, function (result, status) {
 
             // 정상적으로 검색이 완료됐으면 
@@ -194,7 +188,6 @@
     function drawMarker(kt) {
       for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
-        console.log("markerHide");
       }
       markers = [];
       const db = firebase.firestore();
@@ -206,7 +199,6 @@
           var rImage = doc.data().이미지;
           var rReview = doc.data().후기;
           if (rKinds === kt) {
-            console.log(rKinds);
             geocoder.addressSearch(rAddress, function (result, status) {
 
               // 정상적으로 검색이 완료됐으면
@@ -281,16 +273,13 @@
       firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         var uid = user.uid;
-        console.log(uid);
-
-      } else {
-        alert("로그인 후 이용하세요");
-        console.log(uid);
-        location.href = "Login.html";
-      }
-    });
-  }
-  </script>
+    } else {
+      alert("로그인 후 이용하세요");
+      location.href = "Login.html";
+    }
+  });
+}
+</script>
 
 
   <script>
@@ -298,15 +287,15 @@
       var resT = $('#searchTb').val();
       var input = document.getElementById('searchTb');
       var temp = 0;
+
       input.value = null;
-      console.log(resT);
+
       if(resT === '') {
         window.alert('검색어를 입력해주세요');
         return 0;
       }
       for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
-        console.log("markerHide");
       }
       markers = [];
       const db = firebase.firestore();
@@ -319,7 +308,6 @@
           var rReview = doc.data().후기;
           if (rName.includes(resT)) {
             temp = 1;
-            console.log(rKinds);
             geocoder.addressSearch(rAddress, function (result, status) {
 
               // 정상적으로 검색이 완료됐으면
@@ -374,7 +362,7 @@
           window.alert('검색 결과가 없습니다.');
           drawAllMarker();
         }
-        console.log(temp);
+
       });
       
     })
@@ -383,7 +371,7 @@
     $('#myResBtn').click(function () {
       for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
-        console.log("markerHide");
+
       }
       markers = [];
       const db = firebase.firestore();
@@ -398,7 +386,7 @@
           var rReview = doc.data().후기;
           
           if (userId === firebase.auth().currentUser.email) {
-            console.log(userId);
+
             geocoder.addressSearch(rAddress, function (result, status) {
 
               // 정상적으로 검색이 완료됐으면
@@ -434,7 +422,7 @@
                   infowindow.close();
                 });
                 kakao.maps.event.addListener(marker, 'click', function () {
-                  console.log(docId);
+
                   // 마커 위에 인포윈도우를 표시합니다
                   var template = `<div>
                   <h4>상호명 : ${rName}</h4>
@@ -449,8 +437,9 @@
                   $('#delResBtn').click(function() {
                     if(window.confirm('식당을 삭제하시겠습니까?')) {
                       db.collection('Restaurant').doc(docId).delete().then(() => {
-                        console.log('삭제완료');
+
                         window.location.reload();
+
                       }).catch((err) => {
                         console.log(err);
                       }) 
