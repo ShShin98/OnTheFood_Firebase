@@ -65,10 +65,8 @@ function IDcheck(){
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
             var uid = user.uid;
-            console.log(uid);
         } else {
             alert("로그인 후 이용하세요");
-            console.log(uid);
             location.href = "Login.html";
         }
   });
@@ -95,7 +93,6 @@ function onGeoOk(position) {
     const lng = position.coords.longitude;
     _lat = lat;
     _lng = lng;
-    console.log("You live in", lat, lng);
     var locPosition = new kakao.maps.LatLng(lat, lng);
     map.setCenter(locPosition);
 }
@@ -163,11 +160,6 @@ function displayMarker(place) {
         
         document.getElementById('name').innerText = place.place_name;
         document.getElementById('address').innerText = place.road_address_name;
-        console.log(place.place_name);
-        console.log(place.road_address_name);
-        console.log(place.id);
-        console.log("-----------");
-        console.log(place_id);
         
     });
 }
@@ -186,8 +178,6 @@ $('#inputRes').click(function () {
             var rId = doc.data().식당ID;
             if(rId === place_id) {
                 temp = 1;
-                console.log('등록된 식당');
-                console.log(temp);
             }
         });
         if(temp === 0) {
@@ -206,7 +196,7 @@ $('#inputRes').click(function () {
                 // 성공시 동작하는 함수
                 () => {
                     upload.snapshot.ref.getDownloadURL().then((url) => {
-                        console.log('업로드된 경로는', url);
+                        
                         var data = {
                             식당ID: place_id,
                             상호명: place_name,
@@ -217,7 +207,6 @@ $('#inputRes').click(function () {
                             이미지: url,
                         }
                         //if(place.)
-                        console.log(place_id);
                         db.collection('Restaurant').doc(place_id).set(data);
 
                         opener.location.reload();

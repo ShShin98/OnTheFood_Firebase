@@ -13,7 +13,6 @@ function onGeoOk(position) {
     const lng = position.coords.longitude;
     _lat = lat;
     _lng = lng;
-    console.log("You live in", lat, lng);
     var locPosition = new kakao.maps.LatLng(lat, lng);
     map.setCenter(locPosition);
 }
